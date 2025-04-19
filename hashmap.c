@@ -69,9 +69,24 @@ if (map == NULL) return;
 
     
 
-HashMap * createMap(long capacity) {
+HashMap * createMap(long capacity) 
+{
+    HashMap * map = (HashMap *)malloc(sizeof(HashMap));
+    if (map == NULL) return NULL;
 
-    return NULL;
+    // Reservar memoria para los buckets (array de Pair*)
+    map->buckets = (Pair **)calloc(capacity, sizeof(Pair *));
+    if (map->buckets == NULL) {
+        free(map);
+        return NULL;
+    }
+
+    // Inicializar los valores del mapa
+    map->size = 0;
+    map->capacity = capacity;
+    map->current = -1;
+
+    return map;
 }
 
 void eraseMap(HashMap * map,  char * key) {    
