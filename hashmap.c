@@ -42,8 +42,6 @@ int is_equal(void* key1, void* key2){
 void insertMap(HashMap * map, char * key, void * value) 
 {
     if (map == NULL || key == NULL) return;
-
-    // Verificar si hay que agrandar el mapa
     if ((float)map->size / map->capacity > 0.7) {
         enlarge(map);
     }
@@ -52,15 +50,12 @@ void insertMap(HashMap * map, char * key, void * value)
     long originalIndex = index;
 
     while (1) {
-        // Casilla vacía
         if (map->buckets[index] == NULL) {
             map->buckets[index] = createPair(key, value);
             map->size++;
             map->current = index;
             return;
         }
-
-        // Casilla eliminada: reutilizar
         if (map->buckets[index]->key == NULL) {
             free(map->buckets[index]);
             map->buckets[index] = createPair(key, value);
@@ -68,16 +63,12 @@ void insertMap(HashMap * map, char * key, void * value)
             map->current = index;
             return;
         }
-
-        // Clave ya existe → no insertar
         if (strcmp(map->buckets[index]->key, key) == 0) {
             return;
         }
-
-        // Avanzar circularmente
         index = (index + 1) % map->capacity;
 
-        if (index == originalIndex) return; // Vuelta completa
+        if (index == originalIndex) return; 
     }
 
 }
@@ -97,7 +88,7 @@ if (map == NULL) return;
         if (old_buckets[i] != NULL && old_buckets[i]->key != NULL) {
             insertMap(map, old_buckets[i]->key, old_buckets[i]->value);
         } else if (old_buckets[i] != NULL) {
-            free(old_buckets[i]); // liberar pares inválidos
+            free(old_buckets[i]); 
         }
     }
 
@@ -111,15 +102,11 @@ HashMap * createMap(long capacity)
 {
     HashMap * map = (HashMap *)malloc(sizeof(HashMap));
     if (map == NULL) return NULL;
-
-    // Reservar memoria para los buckets (array de Pair*)
     map->buckets = (Pair **)calloc(capacity, sizeof(Pair *));
     if (map->buckets == NULL) {
         free(map);
         return NULL;
     }
-
-    // Inicializar los valores del mapa
     map->size = 0;
     map->capacity = capacity;
     map->current = -1;
@@ -136,7 +123,6 @@ void eraseMap(HashMap * map,  char * key)
 
     while (map->buckets[index] != NULL) {
         if (map->buckets[index]->key != NULL && strcmp(map->buckets[index]->key, key) == 0) {
-            // Invalida el par (no se libera memoria)
             map->buckets[index]->key = NULL;
             map->size--;
             return;
@@ -144,7 +130,7 @@ void eraseMap(HashMap * map,  char * key)
 
         index = (index + 1) % map->capacity;
 
-        if (index == originalIndex) break; // vuelta completa
+        if (index == originalIndex) break; 
     }
 
 }
@@ -157,20 +143,18 @@ Pair * searchMap(HashMap * map,  char * key)
     long originalIndex = index;
 
     while (map->buckets[index] != NULL) {
-        // Si el par es válido y coincide la clave
+        
         if (map->buckets[index]->key != NULL && strcmp(map->buckets[index]->key, key) == 0) {
             map->current = index;
             return map->buckets[index];
         }
 
-        // Avanza al siguiente índice (forma circular)
         index = (index + 1) % map->capacity;
 
-        // Si dimos toda la vuelta → no está
         if (index == originalIndex) break;
     }
 
-    // No se encontró
+    
     return NULL;
 }
 
