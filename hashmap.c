@@ -79,9 +79,28 @@ void eraseMap(HashMap * map,  char * key) {
 
 }
 
-Pair * searchMap(HashMap * map,  char * key) {   
+Pair * searchMap(HashMap * map,  char * key) 
+{ 
+    if (map == NULL || key == NULL) return NULL;
 
+    long index = hash(key, map->capacity);
+    long originalIndex = index;
 
+    while (map->buckets[index] != NULL) {
+        // Si el par es válido y coincide la clave
+        if (map->buckets[index]->key != NULL && strcmp(map->buckets[index]->key, key) == 0) {
+            map->current = index;
+            return map->buckets[index];
+        }
+
+        // Avanza al siguiente índice (forma circular)
+        index = (index + 1) % map->capacity;
+
+        // Si dimos toda la vuelta → no está
+        if (index == originalIndex) break;
+    }
+
+    // No se encontró
     return NULL;
 }
 
