@@ -66,7 +66,7 @@ if (map == NULL) return;
     free(old_buckets);
     enlarge_called = 1; // no borrar (testing purposes)
 }
-}
+
     
 
 HashMap * createMap(long capacity) {
