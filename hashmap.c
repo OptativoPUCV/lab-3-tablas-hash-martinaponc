@@ -39,8 +39,46 @@ int is_equal(void* key1, void* key2){
 }
 
 
-void insertMap(HashMap * map, char * key, void * value) {
+void insertMap(HashMap * map, char * key, void * value) 
+{
+    if (map == NULL || key == NULL) return;
 
+    // Verificar si hay que agrandar el mapa
+    if ((float)map->size / map->capacity > 0.7) {
+        enlarge(map);
+    }
+
+    long index = hash(key, map->capacity);
+    long originalIndex = index;
+
+    while (1) {
+        // Casilla vacía
+        if (map->buckets[index] == NULL) {
+            map->buckets[index] = createPair(key, value);
+            map->size++;
+            map->current = index;
+            return;
+        }
+
+        // Casilla eliminada: reutilizar
+        if (map->buckets[index]->key == NULL) {
+            free(map->buckets[index]);
+            map->buckets[index] = createPair(key, value);
+            map->size++;
+            map->current = index;
+            return;
+        }
+
+        // Clave ya existe → no insertar
+        if (strcmp(map->buckets[index]->key, key) == 0) {
+            return;
+        }
+
+        // Avanzar circularmente
+        index = (index + 1) % map->capacity;
+
+        if (index == originalIndex) return; // Vuelta completa
+    }
 
 }
 
