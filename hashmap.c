@@ -127,8 +127,25 @@ HashMap * createMap(long capacity)
     return map;
 }
 
-void eraseMap(HashMap * map,  char * key) {    
+void eraseMap(HashMap * map,  char * key) 
+{    
+    if (map == NULL || key == NULL) return;
 
+    long index = hash(key, map->capacity);
+    long originalIndex = index;
+
+    while (map->buckets[index] != NULL) {
+        if (map->buckets[index]->key != NULL && strcmp(map->buckets[index]->key, key) == 0) {
+            // Invalida el par (no se libera memoria)
+            map->buckets[index]->key = NULL;
+            map->size--;
+            return;
+        }
+
+        index = (index + 1) % map->capacity;
+
+        if (index == originalIndex) break; // vuelta completa
+    }
 
 }
 
