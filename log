@@ -2,3 +2,54 @@ Sat 19 Apr 2025 06:33:44 PM UTC:
  tests:  0|6
 total_score: 0/70
 eeef3b7
+Sat 19 Apr 2025 06:35:15 PM UTC: 
+ hashmap.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
+Compilation failed
+In file included from test.c:4:
+hashmap.c:68:6: error: expected identifier or ‘(’ before ‘if’
+   68 |     }if (map == NULL) return;
+      |      ^~
+hashmap.c:70:27: error: ‘map’ undeclared here (not in a function)
+   70 |     Pair ** old_buckets = map->buckets;
+      |                           ^~~
+hashmap.c:73:8: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘->’ token
+   73 |     map->capacity *= 2;
+      |        ^~
+hashmap.c:74:8: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘->’ token
+   74 |     map->buckets = (Pair **)calloc(map->capacity, sizeof(Pair *));
+      |        ^~
+hashmap.c:75:8: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘->’ token
+   75 |     map->size = 0;
+      |        ^~
+hashmap.c:77:5: error: expected identifier or ‘(’ before ‘for’
+   77 |     for (long i = 0; i < old_capacity; i++) {
+      |     ^~~
+hashmap.c:77:24: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘<’ token
+   77 |     for (long i = 0; i < old_capacity; i++) {
+      |                        ^
+hashmap.c:77:41: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘++’ token
+   77 |     for (long i = 0; i < old_capacity; i++) {
+      |                                         ^~
+hashmap.c:85:5: warning: data definition has no type or storage class
+   85 |     free(old_buckets);
+      |     ^~~~
+hashmap.c:85:5: warning: type defaults to ‘int’ in declaration of ‘free’ [-Wimplicit-int]
+hashmap.c:85:5: warning: parameter names (without types) in function declaration
+hashmap.c:85:5: error: conflicting types for ‘free’; have ‘int()’
+In file included from test.c:2:
+/nix/store/lcxvgkg659vbvdq86mhxa599wn48f35c-glibc-2.40-36-dev/include/stdlib.h:687:13: note: previous declaration of ‘free’ with type ‘void(void *)’
+  687 | extern void free (void *__ptr) __THROW;
+      |             ^~~~
+hashmap.c:86:5: warning: data definition has no type or storage class
+   86 |     enlarge_called = 1; // no borrar (testing purposes)
+      |     ^~~~~~~~~~~~~~
+hashmap.c:86:5: warning: type defaults to ‘int’ in declaration of ‘enlarge_called’ [-Wimplicit-int]
+hashmap.c:86:5: error: redefinition of ‘enlarge_called’
+hashmap.c:10:5: note: previous definition of ‘enlarge_called’ with type ‘int’
+   10 | int enlarge_called=0;
+      |     ^~~~~~~~~~~~~~
+hashmap.c:87:1: error: expected identifier or ‘(’ before ‘}’ token
+   87 | }
+      | ^
+c65b4ae
